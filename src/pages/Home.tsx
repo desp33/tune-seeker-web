@@ -4,7 +4,10 @@ import { toast } from 'sonner';
 import Logo from '@/components/Logo';
 import SearchInput from '@/components/SearchInput';
 import SongList from '@/components/SongList';
-import { getRecommendedSongs, getNewReleases, getTopCharts, searchSongs } from '@/services/songService';
+import FeaturedSongs from '@/components/FeaturedSongs';
+import BrowseSection from '@/components/BrowseSection';
+import YouMayLike from '@/components/YouMayLike';
+import { searchSongs, getRecommendedSongs } from '@/services/songService';
 import { Song } from '@/components/SongCard';
 
 const Home: React.FC = () => {
@@ -39,11 +42,11 @@ const Home: React.FC = () => {
       </header>
 
       <main className="container mx-auto px-4 md:px-8 lg:px-12 pb-16">
-        <div className="flex flex-col items-center justify-center py-16 md:py-24">
+        <div className="flex flex-col items-center justify-center py-8 md:py-12">
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-8 text-center">
             Discover Your Next Favorite Song
           </h1>
-          <p className="text-streamr-gray mb-12 text-center max-w-2xl">
+          <p className="text-streamr-gray mb-8 text-center max-w-2xl">
             Search by typing, or upload an audio file to find similar music
           </p>
           <SearchInput onSearch={handleSearch} onFileUpload={handleFileUpload} />
@@ -55,9 +58,9 @@ const Home: React.FC = () => {
           </div>
         ) : (
           <>
-            <SongList title="Recommended for You" songs={getRecommendedSongs()} />
-            <SongList title="New Releases" songs={getNewReleases()} />
-            <SongList title="Top Charts" songs={getTopCharts()} />
+            <FeaturedSongs />
+            <BrowseSection />
+            <YouMayLike />
           </>
         )}
       </main>
