@@ -1,0 +1,81 @@
+
+import React, { useState } from 'react';
+import { toast } from 'sonner';
+import Logo from '@/components/Logo';
+import SearchInput from '@/components/SearchInput';
+import SongList from '@/components/SongList';
+import { getRecommendedSongs, getNewReleases, getTopCharts, searchSongs } from '@/services/songService';
+import { Song } from '@/components/SongCard';
+
+const Home: React.FC = () => {
+  const [searchResults, setSearchResults] = useState<Song[] | null>(null);
+
+  const handleSearch = (query: string) => {
+    const results = searchSongs(query);
+    setSearchResults(results);
+    
+    if (results.length === 0) {
+      toast.info("No songs found matching your search.");
+    }
+  };
+
+  const handleFileUpload = (file: File) => {
+    // In a real app, we'd process the audio file here
+    toast.success(`File "${file.name}" uploaded. Analyzing audio...`);
+    
+    // Mock response after "analysis"
+    setTimeout(() => {
+      const recommendedSongs = getRecommendedSongs();
+      setSearchResults(recommendedSongs);
+    }, 1500);
+  };
+
+  return (
+    <div className="min-h-screen bg-streamr-dark text-white">
+      <header className="py-6 px-4 md:px-8 lg:px-12">
+        <div className="container mx-auto">
+          <Logo size="lg" />
+        </div>
+      </header>
+
+      <main className="container mx-auto px-4 md:px-8 lg:px-12 pb-16">
+        <div className="flex flex-col items-center justify-center py-16 md:py-24">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-8 text-center">
+            Discover Your Next Favorite Song
+          </h1>
+          <p className="text-streamr-gray mb-12 text-center max-w-2xl">
+            Search by typing, or upload an audio file to find similar music
+          </p>
+          <SearchInput onSearch={handleSearch} onFileUpload={handleFileUpload} />
+        </div>
+
+        {searchResults ? (
+          <div className="mt-12">
+            <h2 className="text-2xl font-semibold mb-6">Search Results</h2>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+              {searchResults.map((song) => (
+                <div key={song.id} className="col-span-1">
+                  <SongCard song={song} />
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <>
+            <SongList title="Recommended for You" songs={getRecommendedSongs()} />
+            <SongList title="New Releases" songs={getNewReleases()} />
+            <SongList title="Top Charts" songs={getTopCharts()} />
+          </>
+        )}
+      </main>
+
+      <footer className="py-8 border-t border-gray-800 mt-12">
+        <div className="container mx-auto px-4 text-center text-streamr-gray">
+          <p>© {new Date().getFullYear()} StreamR. All rights reserved.</p>
+        </div>
+      </footer>
+    </div>
+  );
+};
+
+export default Home;
