@@ -18,7 +18,7 @@ interface BrowseItem {
 const browseItems: BrowseItem[] = [
   { id: 'b1', label: 'Your Library', value: 'library', icon: Library },
   { id: 'b2', label: 'Downloads', value: 'downloads', icon: Download },
-  { id: 'b3', label: 'Playlists', value: 'playlists', icon: ListMusic }, // Changed from Playlist to ListMusic
+  { id: 'b3', label: 'Playlists', value: 'playlists', icon: ListMusic },
   { id: 'b4', label: 'Genres', value: 'genres', icon: ListMusic },
   { id: 'b5', label: 'Instruments', value: 'instruments', icon: Music },
 ];
@@ -56,15 +56,24 @@ const BrowseSection: React.FC = () => {
         className="w-full"
       >
         <ScrollArea className="w-full">
-          <TabsList className="bg-streamr-dark-accent h-12 mb-6 flex w-full overflow-x-auto">
+          <TabsList className="bg-transparent h-12 mb-6 flex w-full overflow-x-auto gap-6">
             {browseItems.map((item) => (
               <TabsTrigger 
                 key={item.id}
                 value={item.value} 
-                className="flex-shrink-0 flex items-center gap-2 data-[state=active]:bg-streamr-blue data-[state=active]:text-white"
+                className="flex-shrink-0 flex items-center gap-2 bg-transparent border-0 relative px-0 transition-all
+                  data-[state=active]:bg-transparent data-[state=active]:text-streamr-blue group"
               >
-                <item.icon className="w-4 h-4" />
-                <span>{item.label}</span>
+                <item.icon className="w-4 h-4 transition-colors group-data-[state=active]:text-streamr-blue" />
+                <span className="transition-colors group-data-[state=active]:text-white text-streamr-gray">
+                  {item.label}
+                </span>
+                {/* Subtle indicator line for active state */}
+                <span className="absolute bottom-0 left-0 w-full h-0.5 scale-x-0 transition-transform origin-center 
+                  group-data-[state=active]:scale-x-100 bg-streamr-blue opacity-70"></span>
+                {/* Very subtle glow effect */}
+                <span className="absolute inset-0 rounded-md opacity-0 group-data-[state=active]:opacity-10 
+                  bg-streamr-blue blur-sm -z-10"></span>
               </TabsTrigger>
             ))}
           </TabsList>
