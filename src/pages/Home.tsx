@@ -51,14 +51,7 @@ const Home: React.FC = () => {
 
         {searchResults ? (
           <div className="mt-12">
-            <h2 className="text-2xl font-semibold mb-6">Search Results</h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-              {searchResults.map((song) => (
-                <div key={song.id} className="col-span-1">
-                  <SongCard song={song} />
-                </div>
-              ))}
-            </div>
+            <SongList title="Search Results" songs={searchResults} />
           </div>
         ) : (
           <>
