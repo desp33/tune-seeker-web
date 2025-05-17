@@ -9,6 +9,8 @@ export interface Song {
   album: string;
   coverArt: string;
   duration: string;
+  genreId?: string;
+  instrumentId?: string;
 }
 
 interface SongCardProps {

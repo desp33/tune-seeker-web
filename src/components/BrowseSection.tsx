@@ -3,10 +3,11 @@ import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import SongList from '@/components/SongList';
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Library, Download, ListMusic, Music, Folder } from 'lucide-react';
-import { getAllSongs } from '@/services/songService';
+import { Library, ListMusic, Music, Folder } from 'lucide-react';
+import { getAllSongs, getSongsByGenre } from '@/services/songService';
+import { useNavigate } from 'react-router-dom';
 
-type BrowseCategory = 'library' | 'downloads' | 'playlists' | 'genres' | 'instruments';
+type BrowseCategory = 'library' | 'playlists' | 'genres' | 'instruments';
 
 interface BrowseItem {
   id: string;
@@ -17,28 +18,39 @@ interface BrowseItem {
 
 const browseItems: BrowseItem[] = [
   { id: 'b1', label: 'Your Library', value: 'library', icon: Library },
-  { id: 'b2', label: 'Downloads', value: 'downloads', icon: Download },
   { id: 'b3', label: 'Playlists', value: 'playlists', icon: ListMusic },
-  { id: 'b4', label: 'Genres', value: 'genres', icon: ListMusic },
-  { id: 'b5', label: 'Instruments', value: 'instruments', icon: Music },
+  { id: 'b4', label: 'Genres', value: 'genres', icon: Music },
+  { id: 'b5', label: 'Instruments', value: 'instruments', icon: Folder },
+];
+
+// Available genres
+export const genres = [
+  { id: 'g1', name: 'Jazz' },
+  { id: 'g2', name: 'Hip Hop' },
+  { id: 'g3', name: 'R&B' },
+  { id: 'g4', name: 'Country' },
+  { id: 'g5', name: 'Folk' },
+  { id: 'g6', name: 'Rock' },
 ];
 
 const BrowseSection: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<BrowseCategory>('library');
   const songs = getAllSongs();
+  const navigate = useNavigate();
 
-  // Filter songs based on selected category (in a real app this would be dynamic)
-  // Here we're just showing different numbers of songs to simulate different content
+  const handleGenreClick = (genreId: string) => {
+    navigate(`/genre/${genreId}`);
+  };
+
+  // Filter songs based on selected category
   const getCategoryContent = (category: BrowseCategory) => {
     switch (category) {
       case 'library':
         return songs.slice(0, 6);
-      case 'downloads':
-        return songs.slice(2, 6);
       case 'playlists':
         return songs.slice(0, 5);
       case 'genres':
-        return songs.slice(1, 7);
+        return null; // We'll render genres differently
       case 'instruments':
         return songs.slice(3, 7);
       default:
@@ -81,10 +93,25 @@ const BrowseSection: React.FC = () => {
         
         {browseItems.map((item) => (
           <TabsContent key={item.id} value={item.value}>
-            <SongList 
-              title={`${item.label} Content`} 
-              songs={getCategoryContent(item.value)}
-            />
+            {item.value === 'genres' ? (
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                {genres.map((genre) => (
+                  <button
+                    key={genre.id}
+                    onClick={() => handleGenreClick(genre.id)}
+                    className="bg-streamr-dark-accent p-4 rounded-lg transition-transform hover:scale-105 hover:bg-streamr-dark-accent/80 text-center"
+                  >
+                    <Music className="w-8 h-8 mx-auto mb-2 text-streamr-blue" />
+                    <p className="text-white font-medium">{genre.name}</p>
+                  </button>
+                ))}
+              </div>
+            ) : (
+              <SongList 
+                title={`${item.label} Content`} 
+                songs={getCategoryContent(item.value) || []}
+              />
+            )}
           </TabsContent>
         ))}
       </Tabs>
