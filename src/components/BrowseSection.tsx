@@ -48,7 +48,7 @@ const BrowseSection: React.FC = () => {
 
   return (
     <div className="mb-12">
-      <h2 className="text-xl font-semibold text-white mb-4">Browse</h2>
+      <h2 className="text-xl font-semibold text-white mb-4 text-left">Browse</h2>
       
       <Tabs defaultValue="library" 
         value={activeCategory} 
@@ -56,7 +56,7 @@ const BrowseSection: React.FC = () => {
         className="w-full"
       >
         <ScrollArea className="w-full">
-          <TabsList className="bg-transparent h-12 mb-6 flex w-full overflow-x-auto gap-6">
+          <TabsList className="bg-transparent h-12 mb-6 flex w-full overflow-x-auto gap-6 justify-start">
             {browseItems.map((item) => (
               <TabsTrigger 
                 key={item.id}

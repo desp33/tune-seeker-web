@@ -21,12 +21,14 @@ const SongCard: React.FC<SongCardProps> = ({ song }) => {
       to={`/song/${song.id}`} 
       className="block bg-streamr-dark-accent rounded-lg overflow-hidden transition-transform hover:scale-105 hover:shadow-lg hover:shadow-streamr-blue/20"
     >
-      <div className="relative pb-[100%]">
-        <img 
-          src={song.coverArt} 
-          alt={`${song.title} album art`} 
-          className="absolute inset-0 w-full h-full object-cover"
-        />
+      <div className="flex justify-center px-3 pt-3">
+        <div className="w-[76%] relative pb-[76%]">
+          <img 
+            src={song.coverArt} 
+            alt={`${song.title} album art`} 
+            className="absolute inset-0 w-full h-full object-cover rounded-md"
+          />
+        </div>
       </div>
       <div className="p-4">
         <h3 className="font-medium text-white truncate">{song.title}</h3>

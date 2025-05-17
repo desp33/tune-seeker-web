@@ -9,6 +9,8 @@ import BrowseSection from '@/components/BrowseSection';
 import YouMayLike from '@/components/YouMayLike';
 import { searchSongs, getRecommendedSongs } from '@/services/songService';
 import { Song } from '@/components/SongCard';
+import { Button } from '@/components/ui/button';
+import { UserPlus } from 'lucide-react';
 
 const Home: React.FC = () => {
   const [searchResults, setSearchResults] = useState<Song[] | null>(null);
@@ -36,8 +38,12 @@ const Home: React.FC = () => {
   return (
     <div className="min-h-screen bg-streamr-dark text-white">
       <header className="py-6 px-4 md:px-8 lg:px-12">
-        <div className="container mx-auto">
+        <div className="container mx-auto flex justify-between items-center">
           <Logo size="lg" />
+          <Button variant="outline" className="border-streamr-blue text-streamr-blue hover:bg-streamr-blue/10">
+            <UserPlus size={18} className="mr-2" />
+            Sign Up
+          </Button>
         </div>
       </header>
 
