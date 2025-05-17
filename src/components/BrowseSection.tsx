@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import SongList from '@/components/SongList';
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Library, Download, Playlist, ListMusic, Music, Folder } from 'lucide-react';
+import { Library, Download, ListMusic, Music, Folder } from 'lucide-react';
 import { getAllSongs } from '@/services/songService';
 
 type BrowseCategory = 'library' | 'downloads' | 'playlists' | 'genres' | 'instruments';
@@ -18,7 +18,7 @@ interface BrowseItem {
 const browseItems: BrowseItem[] = [
   { id: 'b1', label: 'Your Library', value: 'library', icon: Library },
   { id: 'b2', label: 'Downloads', value: 'downloads', icon: Download },
-  { id: 'b3', label: 'Playlists', value: 'playlists', icon: Playlist },
+  { id: 'b3', label: 'Playlists', value: 'playlists', icon: ListMusic }, // Changed from Playlist to ListMusic
   { id: 'b4', label: 'Genres', value: 'genres', icon: ListMusic },
   { id: 'b5', label: 'Instruments', value: 'instruments', icon: Music },
 ];
