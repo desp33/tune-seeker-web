@@ -123,7 +123,7 @@ const SearchInput: React.FC<SearchInputProps> = ({ onSearch, onFileUpload, allSo
                     className="flex items-center py-3 px-4 cursor-pointer hover:bg-gray-800 text-white"
                   >
                     <div className="h-8 w-8 mr-3 rounded overflow-hidden">
-                      <img src={song.cover} alt={song.title} className="h-full w-full object-cover" />
+                      <img src={song.coverArt} alt={song.title} className="h-full w-full object-cover" />
                     </div>
                     <div>
                       <p className="font-medium">{song.title}</p>
