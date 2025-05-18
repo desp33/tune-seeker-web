@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Play, Pause } from 'lucide-react';
 import { 
@@ -60,7 +61,7 @@ const featuredSongs: FeaturedSong[] = [
 
 const FeaturedSongs: React.FC = () => {
   const navigate = useNavigate();
-  const { currentSong, isPlaying, playSong, pauseSong } = useMediaPlayer();
+  const { currentSong, isPlaying, togglePlayback } = useMediaPlayer();
 
   const handleSongClick = (song: FeaturedSong) => {
     navigate(`/song/${song.id}`);
@@ -68,16 +69,13 @@ const FeaturedSongs: React.FC = () => {
 
   const handlePlayClick = (e: React.MouseEvent, song: FeaturedSong) => {
     e.stopPropagation();
-    if (currentSong?.id === song.id && isPlaying) {
-      pauseSong();
-    } else {
-      playSong({
-        id: song.id,
-        title: song.name,
-        artist: song.artist,
-        coverArt: song.image
-      });
-    }
+    
+    togglePlayback({
+      id: song.id,
+      title: song.name,
+      artist: song.artist,
+      coverArt: song.image
+    });
   };
 
   return (

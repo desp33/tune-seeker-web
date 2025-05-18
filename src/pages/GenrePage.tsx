@@ -40,7 +40,7 @@ const GenrePage: React.FC = () => {
         </div>
       </header>
 
-      <main className="container mx-auto px-4 md:px-8 lg:px-12 pb-16">
+      <main className="container mx-auto px-4 md:px-8 lg:px-12 pb-32"> {/* Increased bottom padding to accommodate media player */}
         <div className="mb-8">
           <h1 className="text-3xl md:text-4xl font-bold mb-4">{genreName}</h1>
           <p className="text-streamr-gray">

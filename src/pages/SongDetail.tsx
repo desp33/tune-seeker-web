@@ -1,18 +1,19 @@
 
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Play, Pause } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import Logo from '@/components/Logo';
 import { getSongById, getRecommendedSongs } from '@/services/songService';
 import { Song } from '@/components/SongCard';
 import SongList from '@/components/SongList';
+import { useMediaPlayer } from '@/hooks/use-media-player';
 
 const SongDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [song, setSong] = useState<Song | null>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const { currentSong, isPlaying, togglePlayback } = useMediaPlayer();
 
   useEffect(() => {
     if (id) {
@@ -25,9 +26,15 @@ const SongDetail: React.FC = () => {
     }
   }, [id]);
 
-  const togglePlay = () => {
-    setIsPlaying(!isPlaying);
-    toast.info(isPlaying ? "Paused playback" : `Now playing: ${song?.title}`);
+  const handleTogglePlay = () => {
+    if (song) {
+      togglePlayback(song);
+      toast.info(
+        isPlaying && currentSong?.id === song.id 
+          ? "Paused playback" 
+          : `Now playing: ${song.title}`
+      );
+    }
   };
 
   if (!song) {
@@ -42,6 +49,9 @@ const SongDetail: React.FC = () => {
       </div>
     );
   }
+
+  // Determine if this specific song is currently playing
+  const isThisSongPlaying = currentSong?.id === song.id && isPlaying;
 
   return (
     <div className="min-h-screen bg-streamr-dark text-white">
@@ -58,7 +68,7 @@ const SongDetail: React.FC = () => {
         </div>
       </header>
 
-      <main className="container mx-auto px-4 md:px-8 lg:px-12 pb-16">
+      <main className="container mx-auto px-4 md:px-8 lg:px-12 pb-32"> {/* Increased bottom padding to accommodate media player */}
         <div className="grid grid-cols-1 md:grid-cols-[300px_1fr] gap-8">
           <div className="aspect-square relative overflow-hidden rounded-lg">
             <img
@@ -77,14 +87,24 @@ const SongDetail: React.FC = () => {
 
             <div className="flex items-center">
               <Button
-                onClick={togglePlay}
+                onClick={handleTogglePlay}
                 className={`${
-                  isPlaying 
+                  isThisSongPlaying 
                   ? "bg-streamr-dark-accent hover:bg-streamr-dark-accent/80" 
                   : "bg-streamr-blue hover:bg-streamr-blue/80"
-                } rounded-full px-8 py-2 text-white font-medium`}
+                } rounded-full px-8 py-2 text-white font-medium flex items-center gap-2`}
               >
-                {isPlaying ? "Pause" : "Play"}
+                {isThisSongPlaying ? (
+                  <>
+                    <Pause size={18} />
+                    Pause
+                  </>
+                ) : (
+                  <>
+                    <Play size={18} />
+                    Play
+                  </>
+                )}
               </Button>
               
               <div className="ml-4 flex items-center">
