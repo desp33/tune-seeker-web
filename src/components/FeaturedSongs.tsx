@@ -12,12 +12,14 @@ import {
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useMediaPlayer } from '@/hooks/use-media-player';
+import { getSongById } from '@/services/songService';
 
 interface FeaturedSong {
   id: string;
   name: string;
   artist: string;
   image: string;
+  songId: string; // Maps to the actual song ID in the songService
 }
 
 const featuredSongs: FeaturedSong[] = [
@@ -25,37 +27,43 @@ const featuredSongs: FeaturedSong[] = [
     id: "f1", 
     name: "Blinding Lights", 
     artist: "The Weeknd",
-    image: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=250&auto=format&fit=crop" 
+    image: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=250&auto=format&fit=crop",
+    songId: "1" 
   },
   { 
     id: "f2", 
     name: "Levitating", 
     artist: "Dua Lipa",
-    image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?q=80&w=250&auto=format&fit=crop" 
+    image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?q=80&w=250&auto=format&fit=crop",
+    songId: "2" 
   },
   { 
     id: "f3", 
     name: "Save Your Tears", 
     artist: "The Weeknd",
-    image: "https://images.unsplash.com/photo-1511379938547-c1f69419868d?q=80&w=250&auto=format&fit=crop" 
+    image: "https://images.unsplash.com/photo-1511379938547-c1f69419868d?q=80&w=250&auto=format&fit=crop",
+    songId: "3" 
   },
   { 
     id: "f4", 
     name: "Montero", 
     artist: "Lil Nas X",
-    image: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=250&auto=format&fit=crop" 
+    image: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=250&auto=format&fit=crop",
+    songId: "4" 
   },
   { 
     id: "f5", 
     name: "Kiss Me More", 
     artist: "Doja Cat ft. SZA",
-    image: "https://images.unsplash.com/photo-1501612780327-45045538702b?q=80&w=250&auto=format&fit=crop" 
+    image: "https://images.unsplash.com/photo-1501612780327-45045538702b?q=80&w=250&auto=format&fit=crop",
+    songId: "5" 
   },
   { 
     id: "f6", 
     name: "Stay", 
     artist: "The Kid LAROI",
-    image: "https://images.unsplash.com/photo-1492563817904-5f1dc687974f?q=80&w=250&auto=format&fit=crop" 
+    image: "https://images.unsplash.com/photo-1492563817904-5f1dc687974f?q=80&w=250&auto=format&fit=crop",
+    songId: "6" 
   },
 ];
 
@@ -64,18 +72,18 @@ const FeaturedSongs: React.FC = () => {
   const { currentSong, isPlaying, togglePlayback } = useMediaPlayer();
 
   const handleSongClick = (song: FeaturedSong) => {
-    navigate(`/song/${song.id}`);
+    navigate(`/song/${song.songId}`);
   };
 
   const handlePlayClick = (e: React.MouseEvent, song: FeaturedSong) => {
     e.stopPropagation();
     
-    togglePlayback({
-      id: song.id,
-      title: song.name,
-      artist: song.artist,
-      coverArt: song.image
-    });
+    // Get full song details from songService
+    const fullSong = getSongById(song.songId);
+    
+    if (fullSong) {
+      togglePlayback(fullSong);
+    }
   };
 
   return (
@@ -102,7 +110,7 @@ const FeaturedSongs: React.FC = () => {
                         size="icon"
                         className="text-white hover:scale-110 transition-transform"
                       >
-                        {currentSong?.id === song.id && isPlaying ? (
+                        {currentSong?.id === song.songId && isPlaying ? (
                           <Pause className="h-8 w-8" />
                         ) : (
                           <Play className="h-8 w-8" />
