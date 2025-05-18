@@ -1,4 +1,3 @@
-
 import { Song } from "@/components/SongCard";
 
 // Mock data for our application
@@ -118,8 +117,10 @@ export const getSongById = (id: string): Song | undefined => {
   return songs.find(song => song.id === id);
 };
 
+// Add this new function to get all songs
 export const getAllSongs = (): Song[] => {
-  return [...songs];
+  // Return all songs from the songs array
+  return songs;
 };
 
 export const searchSongs = (query: string): Song[] => {
