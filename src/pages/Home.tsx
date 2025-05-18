@@ -6,7 +6,8 @@ import SearchInput from '@/components/SearchInput';
 import SongList from '@/components/SongList';
 import FeaturedSongs from '@/components/FeaturedSongs';
 import BrowseSection from '@/components/BrowseSection';
-import YouMayLike from '@/components/YouMayLike';
+import PodcastsSection from '@/components/PodcastsSection';
+import MadeForYouSection from '@/components/MadeForYouSection';
 import { searchSongs, getRecommendedSongs, getAllSongs } from '@/services/songService';
 import { Song } from '@/components/SongCard';
 import AuthForm from '@/components/AuthForm';
@@ -62,7 +63,8 @@ const Home: React.FC = () => {
           <>
             <FeaturedSongs />
             <BrowseSection />
-            <YouMayLike />
+            <PodcastsSection />
+            <MadeForYouSection />
           </>
         )}
       </main>
