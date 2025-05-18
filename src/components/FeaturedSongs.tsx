@@ -90,20 +90,20 @@ const FeaturedSongs: React.FC = () => {
     <div className="mb-12">
       <h2 className="text-xl font-semibold text-white mb-4">Top Featured Songs</h2>
       <Carousel
-        opts={{ align: "start", loop: true }}
+        opts={{ align: "start", loop: true, dragFree: true }} // Enable free dragging for smooth swipe
         className="w-full"
       >
         <CarouselContent className="-ml-2 md:-ml-4">
           {featuredSongs.map((song) => (
             <CarouselItem key={song.id} className="pl-2 md:pl-4 basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5">
               <Card 
-                className="bg-transparent border-none cursor-pointer group"
+                className="bg-transparent border-none cursor-pointer group max-w-[70%] mx-auto" // Reduced size by 30%
                 onClick={() => handleSongClick(song)}
               >
                 <CardContent className="p-1 flex flex-col items-center">
-                  <div className="w-full aspect-square rounded-lg overflow-hidden mb-2 relative group">
+                  <div className="w-full aspect-square rounded-xl overflow-hidden mb-2 relative group"> {/* Rounded corners */}
                     <img src={song.image} alt={song.name} className="w-full h-full object-cover" />
-                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded-xl"> {/* Match rounded corners */}
                       <Button
                         onClick={(e) => handlePlayClick(e, song)}
                         variant="ghost"
@@ -127,8 +127,6 @@ const FeaturedSongs: React.FC = () => {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
       </Carousel>
     </div>
   );
