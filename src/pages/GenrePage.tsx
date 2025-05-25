@@ -1,11 +1,10 @@
-
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { toast } from 'sonner';
 import Logo from '@/components/Logo';
 import SongList from '@/components/SongList';
-import { getSongsByGenre, getRelatedSongsByGenre } from '@/services/songService';
+import { getSongsByGenre } from '@/services/songService';
 import { genres } from '@/components/BrowseSection';
 
 const GenrePage: React.FC = () => {

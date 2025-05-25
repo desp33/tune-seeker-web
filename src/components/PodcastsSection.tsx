@@ -1,30 +1,32 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Podcast, Headphones, Star, Calendar } from 'lucide-react';
 import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
-
-interface PodcastCategory {
-  id: string;
-  title: string;
-  icon: React.ReactNode;
-  slug: string;
-}
-
-const podcastCategories: PodcastCategory[] = [
-  { id: 'pc1', title: 'Podcast Charts', icon: <Podcast className="h-6 w-6" />, slug: 'podcast-charts' },
-  { id: 'pc2', title: 'Editors Picks', icon: <Star className="h-6 w-6" />, slug: 'editors-picks' },
-  { id: 'pc3', title: 'All Time Hits', icon: <Headphones className="h-6 w-6" />, slug: 'all-time-hits' },
-  { id: 'pc4', title: 'Categories', icon: <Calendar className="h-6 w-6" />, slug: 'categories' },
-];
+import { podcastCategories } from '@/services/podcastService';
 
 const PodcastsSection: React.FC = () => {
+  // Map podcast categories to their respective icons
+  const getCategoryIcon = (slug: string) => {
+    switch (slug) {
+      case 'podcast-charts':
+        return <Podcast className="h-6 w-6" />;
+      case 'editors-picks':
+        return <Star className="h-6 w-6" />;
+      case 'all-time-hits':
+        return <Headphones className="h-6 w-6" />;
+      case 'categories':
+        return <Calendar className="h-6 w-6" />;
+      default:
+        return <Podcast className="h-6 w-6" />;
+    }
+  };
+
   return (
     <div className="mb-12">
       <h2 className="text-xl font-semibold text-white mb-4">Podcasts</h2>
-      <ScrollArea className="w-full whitespace-nowrap pb-4">
-        <div className="flex gap-4">
+      <div className="overflow-x-auto">
+  <div className="flex gap-4 w-max px-1 pb-2">
           {podcastCategories.map((category) => (
             <Link 
               key={category.id} 
@@ -34,7 +36,7 @@ const PodcastsSection: React.FC = () => {
               <Card className="w-[220px] bg-streamr-dark-accent hover:bg-streamr-dark-accent/80 transition-all hover:scale-105 border-0">
                 <CardContent className="p-6 flex flex-col items-center">
                   <div className="w-12 h-12 mb-3 flex items-center justify-center rounded-full bg-streamr-blue bg-opacity-20 text-streamr-blue">
-                    {category.icon}
+                    {getCategoryIcon(category.slug)}
                   </div>
                   <h3 className="text-white font-medium text-center">{category.title}</h3>
                 </CardContent>
@@ -42,7 +44,7 @@ const PodcastsSection: React.FC = () => {
             </Link>
           ))}
         </div>
-      </ScrollArea>
+      </div>
     </div>
   );
 };

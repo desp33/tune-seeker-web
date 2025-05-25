@@ -1,39 +1,31 @@
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Home from './pages/Home';
+import LibraryPage from './pages/LibraryPage';
+import GenrePage from './pages/GenrePage';
+import InstrumentPage from './pages/InstrumentPage';
+import SongPage from './pages/songPage';
+import PlaylistPage from './pages/PlaylistPage';
+import MediaPlayer from './components/MediaPlayer';
+import { Toaster } from 'sonner';
 
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
-import SongDetail from "./pages/SongDetail";
-import NotFound from "./pages/NotFound";
-import PlaylistPage from "./pages/PlaylistPage";
-import GenrePage from "./pages/GenrePage";
-import PodcastPage from "./pages/PodcastPage";
-import MadeForYouPage from "./pages/MadeForYouPage";
-import MediaPlayer from "./components/MediaPlayer";
-
-const queryClient = new QueryClient();
-
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner position="top-center" />
-      <BrowserRouter>
+const App: React.FC = () => {
+  return (
+    <Router>
+      <div className="App">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/song/:id" element={<SongDetail />} />
-          <Route path="/playlist/:id" element={<PlaylistPage />} />
+          <Route path="/library" element={<LibraryPage />} />
           <Route path="/genre/:id" element={<GenrePage />} />
-          <Route path="/podcasts/:slug" element={<PodcastPage />} />
-          <Route path="/made-for-you/:slug" element={<MadeForYouPage />} />
-          <Route path="*" element={<NotFound />} />
+          <Route path="/instrument/:id" element={<InstrumentPage />} />
+          <Route path="/song/:id" element={<SongPage />} />
+          <Route path="/playlist/:slug" element={<PlaylistPage />} />
         </Routes>
         <MediaPlayer />
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+        <Toaster position="top-right" />
+      </div>
+    </Router>
+  );
+};
 
 export default App;

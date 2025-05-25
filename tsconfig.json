@@ -6,9 +6,12 @@
   ],
   "compilerOptions": {
     "baseUrl": ".",
+    "forceConsistentCasingInFileNames": true,
+    "typeRoots": ["./node_modules/@types", "./src"],
     "paths": {
       "@/*": ["./src/*"]
     },
+    "include": ["src/**/*"],
     "noImplicitAny": false,
     "noUnusedParameters": false,
     "skipLibCheck": true,

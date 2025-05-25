@@ -1,25 +1,51 @@
-
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
 import Logo from '@/components/Logo';
-import SongList from '@/components/SongList';
-import { getRecommendedSongs } from '@/services/songService';
+import { MadeForYouCategory, MadeForYouPlaylist } from '@/types/madeForYou';
+import { getMadeForYouCategoryBySlug, getPlaylistsByCategorySlug } from '@/services/madeForYouService';
+import PlaylistCard from '@/components/PlaylistCard';
 
 const MadeForYouPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
-  const songs = getRecommendedSongs(); // Using recommended songs as mock data
+  const [category, setCategory] = useState<MadeForYouCategory | null>(null);
+  const [playlists, setPlaylists] = useState<MadeForYouPlaylist[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  // Convert slug to readable title
-  const getPageTitle = () => {
-    if (!slug) return 'Made For You';
-    
-    return slug
-      .split('-')
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(' ');
-  };
+  useEffect(() => {
+    if (slug) {
+      // Fetch the category and related playlists
+      const categoryData = getMadeForYouCategoryBySlug(slug);
+      const playlistsData = getPlaylistsByCategorySlug(slug);
+      
+      setCategory(categoryData || null);
+      setPlaylists(playlistsData);
+      setLoading(false);
+    }
+  }, [slug]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-streamr-dark text-white flex items-center justify-center">
+        <p>Loading playlists...</p>
+      </div>
+    );
+  }
+
+  if (!category) {
+    return (
+      <div className="min-h-screen bg-streamr-dark text-white flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-streamr-gray mb-4">Playlist category not found</p>
+          <Link to="/" className="text-streamr-blue hover:underline">
+            Back to home
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-streamr-dark text-white">
@@ -29,7 +55,8 @@ const MadeForYouPage: React.FC = () => {
             <Link to="/">
               <Logo size="md" />
             </Link>
-            <h1 className="text-2xl font-bold">{getPageTitle()}</h1>
+            <Separator orientation="vertical" className="h-8 bg-gray-700" />
+            <h1 className="text-2xl font-bold">{category.title}</h1>
           </div>
           <Link to="/">
             <Button variant="ghost" className="text-white">
@@ -41,11 +68,26 @@ const MadeForYouPage: React.FC = () => {
 
       <main className="container mx-auto px-4 md:px-8 lg:px-12 py-8 pb-16">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-4">{getPageTitle()}</h1>
-          <p className="text-streamr-gray">Personalized songs just for you.</p>
+          <h1 className="text-3xl font-bold mb-4">{category.title}</h1>
+          <p className="text-streamr-gray max-w-3xl">{category.description}</p>
         </div>
 
-        <SongList title="Recommended Tracks" songs={songs} />
+        {playlists.length > 0 ? (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+            {playlists.map((playlist) => (
+              <PlaylistCard key={playlist.id} playlist={playlist} />
+            ))}
+          </div>
+        ) : (
+          <div className="flex flex-col items-center justify-center py-12">
+            <p className="text-xl text-streamr-gray mb-4">
+              No playlists found in this category yet.
+            </p>
+            <p className="text-streamr-gray">
+              Check back soon as we're constantly adding new content!
+            </p>
+          </div>
+        )}
       </main>
 
       <footer className="py-8 border-t border-gray-800 mt-12">

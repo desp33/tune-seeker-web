@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { useMediaPlayer } from '@/hooks/use-media-player';
 
 export interface Song {
+  audioUrl: string;
   id: string;
   title: string;
   artist: string;
